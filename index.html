@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You ❤️</title>
+
+<style>
+body{
+  margin:0;
+  font-family: 'Arial', sans-serif;
+  background:#000;
+  color:white;
+  overflow:hidden;
+}
+
+section{
+  display:none;
+  height:100vh;
+  width:100vw;
+  padding:30px;
+  box-sizing:border-box;
+  text-align:center;
+}
+
+section.active{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+button{
+  padding:12px 25px;
+  font-size:18px;
+  border:none;
+  border-radius:25px;
+  margin:10px;
+  cursor:pointer;
+}
+
+.next{
+  background:#ff5f9e;
+  color:white;
+}
+
+.dark{
+  background:#333;
+  color:white;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= PAGE 1 (UNCHANGED) ================= -->
+<section id="p1" class="active">
+  <h1>Hey ❤️</h1>
+  <p>I want to tell you something…</p>
+  <button class="next" onclick="go(2)">Next</button>
+</section>
+
+<!-- ================= PAGE 2 (UNCHANGED) ================= -->
+<section id="p2">
+  <p>You are the best thing that happened in my life 🥺❤️</p>
+  <button class="next" onclick="go(3)">Next</button>
+</section>
+
+<!-- ================= PAGE 3 (UNCHANGED LOGIC) ================= -->
+<section id="p3">
+  <p>Mm ok?</p>
+  <button class="next" onclick="go(4)">Mm ok</button>
+  <button class="dark" onclick="showText()">Cha venna</button>
+
+  <p id="sadText" style="display:none;margin-top:20px;">
+    Pothum pothum...<br>
+    Aprm en thangoo mela kannu patudum 😔
+  </p>
+</section>
+
+<!-- ================= PAGE 4 (FIXED CANVAS) ================= -->
+<section id="p4">
+  <p>Draw a heart for me ❤️</p>
+  <canvas id="canvas" width="300" height="300"
+    style="background:#111;border-radius:20px;"></canvas>
+  <button class="next" onclick="go(5)">Done</button>
+</section>
+
+<!-- ================= PAGE 5 (FINAL PROPOSAL) ================= -->
+<section id="p5">
+  <h1>Will you be mine forever? 💍❤️</h1>
+  <button class="next" onclick="yes()">Yes</button>
+  <button class="dark" onclick="no()">Cha venna</button>
+  <p id="finalText" style="margin-top:20px;"></p>
+</section>
+
+<script>
+/* -------- PAGE CONTROL (NO AUTO JUMP) -------- */
+function go(n){
+  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+  document.getElementById("p"+n).classList.add("active");
+}
+
+/* -------- PAGE 3 TEXT -------- */
+function showText(){
+  document.getElementById("sadText").style.display="block";
+}
+
+/* -------- CANVAS FIX (MOBILE SAFE) -------- */
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+let draw = false;
+
+canvas.addEventListener("pointerdown",()=>draw=true);
+canvas.addEventListener("pointerup",()=>draw=false);
+
+canvas.addEventListener("pointermove",(e)=>{
+  if(!draw) return;
+  const r = canvas.getBoundingClientRect();
+  const x = e.clientX - r.left;
+  const y = e.clientY - r.top;
+  ctx.fillStyle="#ff5f9e";
+  ctx.beginPath();
+  ctx.arc(x,y,4,0,Math.PI*2);
+  ctx.fill();
+});
+
+/* -------- FINAL PAGE -------- */
+function yes(){
+  document.getElementById("finalText").innerHTML =
+  "Yayyyy ❤️💖<br>Pothum pothum… Aprm en thangoo mela kannu patudum 😘";
+}
+function no(){
+  document.getElementById("finalText").innerHTML =
+  "Cha venna nu sonnalum…<br>En manasu unna vittu pogadhu 🥺❤️";
+}
+</script>
+
+</body>
+</html>
